@@ -19,7 +19,7 @@ class DiffieQuantum {
     }
 
     getPublicHQCKey(){
-        return `${this.keyPair.publicKey.toString()}|${this.serverPrime.toString("hex")}|${this.serverClient.getPublicKey().toString("hex")}`
+        return `${this.keyPair.publicKey.toString()}.${this.serverPrime.toString("hex")}.${this.serverClient.getPublicKey().toString("hex")}`
     }
 
     ServerGetSecret(cyphertext, cPublicKey){
@@ -27,16 +27,16 @@ class DiffieQuantum {
             const hqcKey = await hqc.decrypt(Uint8Array.from(cyphertext.split(",").map(x=>parseInt(x,10))), this.keyPair.privateKey)
             const dhmKey = this.serverClient.computeSecret(Buffer.from(cPublicKey, "hex"))
 
-            resolve(Buffer.from(dhmKey.toString("hex") + Buffer.from(hqcKey.toString(), "utf8").toString("hex")))
+            resolve(Buffer.from(dhmKey.toString("ucs-2") + Buffer.from(hqcKey.toString(), "utf8").toString("ucs-2")))
         })
     }
 
     clientGetSecret(client, publicKey){
         return new Promise(async(resolve)=>{
-            const { cyphertext, secret } = await hqc.encrypt(Uint8Array.from(publicKey.split("|")[0].split(",").map(x=>parseInt(x,10))))
-            const dhmKey = client.computeSecret(Buffer.from(publicKey.split("|")[2], "hex"))
+            const { cyphertext, secret } = await hqc.encrypt(Uint8Array.from(publicKey.split(".")[0].split(",").map(x=>parseInt(x,10))))
+            const dhmKey = client.computeSecret(Buffer.from(publicKey.split(".")[2], "hex"))
 
-            resolve({ cyphertext: cyphertext, secret: Buffer.from(dhmKey.toString("hex") + Buffer.from(secret.toString(), "utf8").toString("hex")) })
+            resolve({ cyphertext: cyphertext, secret: Buffer.from(dhmKey.toString("ucs-2") + Buffer.from(secret.toString(), "utf8").toString("ucs-2")) })
         })
     }
 }

@@ -14,7 +14,7 @@
     var publicKey = await request("http://localhost:8080/pk") // Get the server public key
     publicKey = JSON.parse(publicKey.body).data
 
-    const client = crypto.createDiffieHellman(Buffer.from(publicKey.split("|")[1], "hex")) // The public key that DiffieQuantum gives is separated into 3 parts using | and first is the HQC public key, second the DH prime number and lastly the server DH public key
+    const client = crypto.createDiffieHellman(Buffer.from(publicKey.split(".")[1], "hex")) // The public key that DiffieQuantum gives is separated into 3 parts using | and first is the HQC public key, second the DH prime number and lastly the server DH public key
     client.generateKeys()
 
     const secret = await DifQuantum.clientGetSecret(client, publicKey) // Get the secret key from the client(This)
