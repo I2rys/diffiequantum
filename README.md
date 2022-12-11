@@ -1,4 +1,4 @@
-# DiffieQuantum(Beta)
+# DiffieQuantum
 Diffie Hellman merged with HQC.
 
 ## Installation
