@@ -18,7 +18,7 @@ class DiffieQuantum {
         })
     }
 
-    getPublicHQCKey(){
+    getPublicKey(){
         return `${this.keyPair.publicKey.toString()}.${this.serverPrime.toString("hex")}.${this.serverClient.getPublicKey().toString("hex")}`
     }
 

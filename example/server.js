@@ -23,7 +23,7 @@
     web.get("/pk", (req, res)=>{
         res.json({
             status: "success",
-            data: DifQuantum.getPublicHQCKey() // Get DiffieQuantum public key
+            data: DifQuantum.getPublicKey() // Get DiffieQuantum public key
         })
     })
 
